@@ -1,7 +1,7 @@
-#Hernandez, Dan Efraim V.
-#BSCPE 1-4 
-#Activity 1
-#YouTube Link https://www.youtube.com/watch?v=QPjPyUJeYYE&t=980s
+#hernandez_dan_efraim_v.
+#bscpe_1-4
+#activiity_2
+#youtube_link https://www.youtube.com/watch?v=QPjPyUJeYYE&t=980s
 
 import threading
 import winsound
