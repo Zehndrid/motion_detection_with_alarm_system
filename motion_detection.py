@@ -40,17 +40,25 @@ while True:
         frame_black_white = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
         frame_black_white = cv2.GaussianBlur(frame_black_white, (5, 5), 0)
 
-        difference = cv2.absdiff(frame_black_white, start_frame)
-        threshold = cv2.threshold(difference, 25, 255, cv2.THRESH_BINARY)[1]
+        frame_difference = cv2.absdiff(frame_black_white, start_frame)
+        motion_threshold = cv2.threshold(frame_difference, 25, 255, cv2.THRESH_BINARY)[1]
         start_frame = frame_black_white
 
-        if threshold.sum() > 300:
+        if motion_threshold.sum() > 300:
             motion_counter += 1
         else:
             if motion_counter > 0:
                 motion_counter -= 1
-        
-        
+
+        cv2.imshow("Security Camera", motion_threshold)
+    else:
+        cv2.imshow("Security Camera", current_frame)
+
+    if motion_counter > 20:
+        if not is_alarm_ringing:
+            is_alarm_ringing = True
+            threading.Thread(target=trigger_beep_alarm).start()
+
     key_pressed = cv2.waitKey(30)
     if key_pressed == ord("t"):
         alarm_mode_active = not alarm_mode_active
