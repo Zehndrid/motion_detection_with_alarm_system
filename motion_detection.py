@@ -22,9 +22,9 @@ is_alarm_ringing = False
 alarm_mode_active = False
 motion_counter = 0
 
-def beep_alarm():
+def trigger_beep_alarm():
     global is_alarm_ringing
-    for _ in range(5):
+    for beep_count in range(5):
         if not alarm_mode_active:
             break
         print("ALARM")
