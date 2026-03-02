@@ -18,25 +18,25 @@ start_frame = imutils.resize(start_frame, width=500)
 start_frame = cv2.cvtColor(start_frame, cv2.COLOR_BGR2GRAY)
 start_frame = cv2.GaussianBlur(start_frame, (21, 21), 0)
 
-alarm = False
-alarm_mode = False
-alarm_counter = 0
+is_alarm_ringing = False
+alarm_mode_active = False
+motion_counter = 0
 
 def beep_alarm():
-    global alarm
+    global is_alarm_ringing
     for _ in range(5):
-        if not alarm_mode:
+        if not alarm_mode_active:
             break
         print("ALARM")
         winsound.Beep(2500, 1000)
-    alarm = False
+    is_alarm_ringing = False
 
 while True:
 
     return_value, frame = video_capture.read()
     frame = imutils.resize(frame, width=500)
 
-    if alarm_mode:
+    if alarm_mode_active:
         frame_bw = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         frame_bw = cv2.GaussianBlur(frame_bw, (5, 5), 0)
 
@@ -45,18 +45,18 @@ while True:
         start_frame = frame_bw
 
         if threshold.sum() > 300:
-            alarm_counter += 1
+            motion_counter += 1
         else:
-            if alarm_counter > 0:
-                alarm_counter -= 1
+            if motion_counter > 0:
+                motion_counter -= 1
         
         
     key_pressed = cv2.waitKey(30)
     if key_pressed == ord("t"):
-        alarm_mode = not alarm_mode
-        alarm_counter = 0
+        alarm_mode_active = not alarm_mode_active
+        motion_counter = 0
     if key_pressed == ord("q"):
-        alarm_mode = False
+        alarm_mode_active = False
         break
 
 video_capture.release()
